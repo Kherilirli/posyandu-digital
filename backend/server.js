@@ -26,7 +26,7 @@ try {
     DB_PORT: process.env.DB_PORT,
     DB_USER: process.env.DB_USER,
     DB_NAME: process.env.DB_NAME,
-    PASSWORD_LENGTH: process.env.DB_PASSWORD?.length
+    DB_PASSWORD: process.env.DB_PASSWORD,
     });
 
     db.getConnection()
