@@ -1,26 +1,25 @@
 require("dotenv").config();
 
-const mysql = require("mysql2/promise");
+const app = require("./app");
+const db = require("./database/config");
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on ${PORT}`);
+});
 
 (async () => {
     try {
-        console.log("START TEST");
+        const conn = await db.getConnection();
 
-        const conn = await mysql.createConnection({
-            host: process.env.DB_HOST,
-            port: Number(process.env.DB_PORT),
-            user: process.env.DB_USER,
-            password: process.env.DB_PASSWORD,
-            database: process.env.DB_NAME,
-            connectTimeout: 10000
-        });
+        console.log("Database connected");
 
-        console.log("CONNECTED!");
-
-        await conn.end();
+        conn.release();
 
     } catch (err) {
 
+        console.error("Database failed");
         console.error(err);
 
     }
