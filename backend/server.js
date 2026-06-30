@@ -1,26 +1,43 @@
-require('dotenv').config();
+require("dotenv").config();
+
+process.on("uncaughtException", (err) => {
+    console.error("UNCAUGHT EXCEPTION");
+    console.error(err);
+});
+
+process.on("unhandledRejection", (err) => {
+    console.error("UNHANDLED REJECTION");
+    console.error(err);
+});
 
 console.log("1. SERVER START");
 
-const app = require('./app');
-console.log("2. APP LOADED");
+try {
 
-const db = require('./database/config');
-console.log("3. DB CONFIG LOADED");
+    const app = require("./app");
+    console.log("2. APP LOADED");
 
-const PORT = process.env.PORT || 3000;
+    const db = require("./database/config");
+    console.log("3. DB LOADED");
 
-(async () => {
-    try {
-        console.log("4. GET CONNECTION");
-        await db.getConnection();
-        console.log("5. DATABASE CONNECTED");
+    const PORT = process.env.PORT || 3000;
 
-        app.listen(PORT, () => {
-            console.log(`6. SERVER RUNNING ${PORT}`);
+    db.getConnection()
+        .then(() => {
+            console.log("4. DATABASE CONNECTED");
+
+            app.listen(PORT, () => {
+                console.log(`5. SERVER RUNNING ${PORT}`);
+            });
+        })
+        .catch(err => {
+            console.error("DATABASE ERROR");
+            console.error(err);
         });
 
-    } catch (err) {
-        console.error("ERROR :", err);
-    }
-})();
+} catch (err) {
+
+    console.error("IMPORT ERROR");
+    console.error(err);
+
+}
