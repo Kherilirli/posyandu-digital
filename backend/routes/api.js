@@ -14,7 +14,7 @@ const WhoController =
 console.log("3. WhoController");
 
 const AuthController =
-    require('../controllers/authController');
+    require('../controllers/AuthController');
 console.log("4. AuthController");
 
 const ReportController =
